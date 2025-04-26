@@ -171,7 +171,7 @@ impl HmrManager {
       module_loader_output
         .new_added_modules_from_partial_scan
         .iter()
-        .map(|module_idx| self.module_db.modules[*module_idx].stable_id())
+        .map(|module_idx| module_loader_output.module_table.get(*module_idx).stable_id())
         .collect::<Vec<_>>(),
     );
 

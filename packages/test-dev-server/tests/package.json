@@ -6,8 +6,11 @@
     "test": "vitest run"
   },
   "devDependencies": {
-    "vitest": "^3.0.1",
     "@rolldown/test-dev-server": "workspace:*",
-    "execa": "^9.2.0"
+    "execa": "^9.2.0",
+    "vitest": "^3.0.1"
+  },
+  "dependencies": {
+    "why-is-node-running": "^3.2.2"
   }
 }

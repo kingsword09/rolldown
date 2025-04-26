@@ -531,6 +531,10 @@ importers:
         version: 1.15.7
 
   packages/test-dev-server/tests:
+    dependencies:
+      why-is-node-running:
+        specifier: ^3.2.2
+        version: 3.2.2
     devDependencies:
       '@rolldown/test-dev-server':
         specifier: workspace:*
@@ -6063,7 +6067,7 @@ packages:
   right-pad@1.0.1:
     resolution: {integrity: sha512-bYBjgxmkvTAfgIYy328fmkwhp39v8lwVgWhhrzxPV3yHtcSqyYKe9/XOhvW48UFjATg3VuJbpsp5822ACNvkmw==}
     engines: {node: '>= 0.10'}
-    deprecated: Use String.prototype.padEnd() instead
+    deprecated: Please use String.prototype.padEnd() over this package.
 
   rolldown-plugin-dts@0.7.12:
     resolution: {integrity: sha512-ECZRqikcDxz/gbWOULjUQLwpSKapld3aKFZdKYD/Zorven8z2Z3Ht1SoRJLtqL3zjq9fwdkEtb/e68uArExYNA==}
@@ -6810,6 +6814,11 @@ packages:
   why-is-node-running@2.3.0:
     resolution: {integrity: sha512-hUrmaWBdVDcxvYqnyh09zunKzROWjbZTiNy8dBEjkS7ehEDQibXJ7XvlmtbwuTclUiIyN+CyXQD4Vmko8fNm8w==}
     engines: {node: '>=8'}
+    hasBin: true
+
+  why-is-node-running@3.2.2:
+    resolution: {integrity: sha512-NKUzAelcoCXhXL4dJzKIwXeR8iEVqsA0Lq6Vnd0UXvgaKbzVo4ZTHROF2Jidrv+SgxOQ03fMinnNhzZATxOD3A==}
+    engines: {node: '>=20.11'}
     hasBin: true
 
   widest-line@3.1.0:
@@ -13187,6 +13196,8 @@ snapshots:
     dependencies:
       siginfo: 2.0.0
       stackback: 0.0.2
+
+  why-is-node-running@3.2.2: {}
 
   widest-line@3.1.0:
     dependencies:

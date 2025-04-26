@@ -59,7 +59,7 @@ jobs:
       - name: Build Examples For Node18
         run: pnpm --filter '@example/**' build
 
-      - name: HMR Test Node18
+      - name: HMR Test For Node18
         run: pnpm run --filter '@rolldown/test-dev-server-tests' test
 
       - name: Setup Node20 For Testing
@@ -77,7 +77,7 @@ jobs:
       - name: Build Examples For Node20
         run: pnpm --filter '@example/**' build
 
-      - name: HMR Test Node20
+      - name: HMR Test For Node20
         run: pnpm run --filter '@rolldown/test-dev-server-tests' test
 
       - name: Setup Node22 For Testing
@@ -95,5 +95,5 @@ jobs:
       - name: Build Examples For Node22
         run: pnpm --filter '@example/**' build
 
-      - name: HMR Test Node22
+      - name: HMR Test For Node22
         run: pnpm run --filter '@rolldown/test-dev-server-tests' test

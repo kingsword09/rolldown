@@ -19,6 +19,7 @@ async function loadDevConfig(): Promise<DevConfig> {
 class DevServer {
   private config: DevConfig;
   private numberOfLiveConnections = 0;
+  private socket?: WebSocket;
 
   constructor(config: DevConfig) {
     this.config = config;
@@ -60,18 +61,25 @@ class DevServer {
     const server = http.createServer(app);
     const wsServer = new WebSocketServer({ server });
     let socket: WebSocket;
-    wsServer.on('connection', (ws) => {
+    wsServer.on('connection', (ws, req) => {
+      const url = new URL(req.url!, `http://${req.headers.host}`);
+      const from = url.searchParams.get('from');
+      if (from === 'hmr-runtime') {
+        this.sendMessage({ type: 'connected-from-hmr-runtime' });
+      }
+
       this.numberOfLiveConnections += 1;
       console.debug(
         `Detected new Websocket connection. Current live connections: ${this.numberOfLiveConnections}`,
       );
       socket = ws;
+      this.socket = socket;
       ws.on('error', console.error);
     });
     wsServer.on('close', () => {
       this.numberOfLiveConnections -= 1;
       console.debug(
-        `Detected Websocket disconnection. Current live connections: ${this.numberOfLiveConnections}`,
+        `Websocket connection closed. Current live connections: ${this.numberOfLiveConnections}`,
       );
     });
     watcher.on('change', async (path) => {
@@ -87,17 +95,21 @@ class DevServer {
               nodePath.join(process.cwd(), 'dist', path),
               output.patch,
             );
+            const patchUriForBrowser = `/${path}`;
+            const patchUriForFile = nodePath.join(process.cwd(), 'dist', path);
             console.log(
               'Patch:',
               JSON.stringify({
                 type: 'update',
-                url: path,
+                url: patchUriForBrowser,
+                path: patchUriForFile,
               }),
             );
             socket.send(
               JSON.stringify({
                 type: 'update',
-                url: path,
+                url: patchUriForBrowser,
+                path: patchUriForFile,
               }),
             );
           } else {
@@ -113,6 +125,14 @@ class DevServer {
     server.listen(3000);
     console.log('Server listening on http://localhost:3000');
   }
+
+  sendMessage(message: ConnectedFromHmrRuntime) {
+    if (this.hasLiveConnections) {
+      this.socket?.send(
+        JSON.stringify(message),
+      );
+    }
+  }
 }
 
 export async function serve(): Promise<void> {
@@ -123,3 +143,7 @@ export async function serve(): Promise<void> {
 }
 
 export { defineDevConfig };
+
+interface ConnectedFromHmrRuntime {
+  type: 'connected-from-hmr-runtime';
+}
